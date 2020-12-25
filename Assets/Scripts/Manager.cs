@@ -185,6 +185,7 @@ public class Manager : MonoBehaviour
         character.GetComponent<Character>().brain = brain;
         character.GetComponent<Character>().movementSpeed = movementSpeed;
         character.GetComponent<Character>().rotationSpeed = rotationSpeed;
+        character.transform.parent = transform;
         return character;
     }
 }
