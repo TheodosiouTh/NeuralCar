@@ -12,7 +12,7 @@ public class Manager : MonoBehaviour
     [SerializeField] Text BestFitness;
 
     public static float timeToDeath = 5;
-    [SerializeField] static int Population = 25;
+    [SerializeField] static int Population = 50;
     [SerializeField] float movementSpeed = 2.0f;
     [SerializeField] int rotationSpeed = 1;
     [SerializeField] GameObject characterPrephab;
@@ -25,7 +25,7 @@ public class Manager : MonoBehaviour
     [SerializeField] static float GameSpeed = 1.0f;
 
     public static int dead = 0;
-    public static int numberOfNonSmartBrainsToBreed = 5;
+    public static int numberOfNonSmartBrainsToBreed = 10;
     private GameObject[] characters = new GameObject[Population];
 
     public int currentCheckpoint = 0;
