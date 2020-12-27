@@ -139,6 +139,31 @@ public class NeuralNetwork
         }
     }
 
+    public void Save(string path)
+    {
+        using (StreamWriter sw = new StreamWriter(path))
+        {
+            for (int i = 0; i < biases.Length; i++)
+            {
+                for (int j = 0; j < biases[i].Length; j++)
+                {
+                    sw.WriteLine(biases[i][j]);
+                }
+            }
+
+            for (int i = 0; i < weights.Length; i++)
+            {
+                for (int j = 0; j < weights[i].Length; j++)
+                {
+                    for (int k = 0; k < weights[i][j].Length; k++)
+                    {
+                        sw.WriteLine(weights[i][j][k]);
+                    }
+                }
+            }
+        }
+    }
+
     public void Mutate(float chance, float val)
     {
         for (int i = 0; i < biases.Length; i++)
