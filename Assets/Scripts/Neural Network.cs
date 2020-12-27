@@ -16,16 +16,19 @@ public class NeuralNetwork
     public NeuralNetwork(int[] layers)
     {
         this.fitness = 0f;
-        this.layers = new int[layers.Length];
-        for (int i = 0; i < layers.Length; i++)
-        {
-            this.layers[i] = layers[i];
-        }
+        InitializeLayers(layers);
         InitializeNeurons();
         InitializeBiases();
         InitializeWeights();
     }
 
+    private void InitializeLayers(int[] layers) {
+        this.layers = new int[layers.Length];
+        for (int i = 0; i < layers.Length; i++)
+        {
+            this.layers[i] = layers[i];
+        }
+    }
 
     private void InitializeNeurons()
     {
