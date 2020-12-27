@@ -104,20 +104,6 @@ public class NeuralNetwork
         return value;
     }
 
-
-
-    public int CompareTo(NeuralNetwork other)
-    {
-        if (other == null)
-            return 1;
-        if (fitness > other.fitness)
-            return 1;
-        else if (fitness < other.fitness)
-            return -1;
-        else
-            return 0;
-    }
-
     public void Load(string path)
     {
         TextReader tr = new StreamReader(path);
