@@ -53,7 +53,7 @@ public class Character : MonoBehaviour
         if (!dead) {
             distances = calculateDistances();
             float[] output = brain.FeedForward(distances);
-            transform.Translate(transform.forward * movementSpeed * Time.deltaTime);
+            transform.Translate(transform.forward * (output[0] * Time.deltaTime));
             transform.Rotate(Vector3.up * (output[1] * rotationSpeed * Time.deltaTime));
 
             if (Time.time - lastCheckpointHitTime > Manager.timeToDeath)
