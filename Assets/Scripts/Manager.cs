@@ -84,54 +84,25 @@ public class Manager : MonoBehaviour
     void newGeneration()
     {
         generation += 1;
-        List<NeuralNetwork> nextGenration = new List<NeuralNetwork>();
-        
-        //add smart people to new generation
-        int[] smartestCharacters = getBestCharacters();
-        for (int i = 0; i < smartestCharacters.Length; i += 1)
-        {
-            nextGenration.Add(getBrain(characters[smartestCharacters[i]]));
-        }
-
         Generation.text = "Generation " + generation;
-        BestFitness.text = "Best Fitness Achieved: " + MutationCuttoff;
+        List<NeuralNetwork> nextGenration = new List<NeuralNetwork>();
 
-        // breed smart brains with non smart ones to make the latter smarter
-        if(smartestCharacters.Length > 0 && smartestCharacters.Length < Population - numberOfNonSmartBrainsToBreed)
+        // keep the smartest characters
+        NeuralNetwork[] smartesCharacters = getBestNetworks();
+        for (int i = 0; i < smartesCharacters.Length; i++)
         {
-            NeuralNetwork[] sortredCharacters = sortByFitness(characters);
-            int beforeBreeding = nextGenration.ToArray().Length;
-            int notSmartBrainIndex = 0;
-            while (nextGenration.ToArray().Length - beforeBreeding < numberOfNonSmartBrainsToBreed)
-            {
-                int smarterBrainIndex = UnityEngine.Random.Range(0, smartestCharacters.Length - 1);
-                Debug.Log("Smartest Index: " + smarterBrainIndex + " Length: " + smartestCharacters.Length);
-                NeuralNetwork smarterBrain = getBrain(characters[smartestCharacters[smarterBrainIndex]]);
-
-                NeuralNetwork selectedBrain = sortredCharacters[notSmartBrainIndex];
-                if (!nextGenration.Contains(selectedBrain))
-                {
-                    selectedBrain.BreedWith(smarterBrain);
-                    nextGenration.Add(selectedBrain);
-                }
-                notSmartBrainIndex += 1;
-            }
+            nextGenration.Add(smartesCharacters[i]);
         }
+        BestFitness.text = "Best Fitness(last generation): " + smartesCharacters[0].fitness;
 
-
-        // mutate the rest
-        int index = 0;
+        // The rest of the spots are mutations of the smartes characters;
         while (nextGenration.ToArray().Length < Population)
         {
-            NeuralNetwork selectedBrain = getBrain(characters[index]);
-            if (!nextGenration.Contains(selectedBrain))
-            {
-                selectedBrain.Mutate(mutationChance, mutationStrength);
-                nextGenration.Add(selectedBrain);
-            }
-            index += 1;
+            int selectedSmartCharacter = UnityEngine.Random.Range(0, smartesCharacters.Length - 1);
+            NeuralNetwork tempBrain = smartesCharacters[selectedSmartCharacter].Clone();
+            tempBrain.Mutate(mutationChance, mutationStrength);
+            nextGenration.Add(tempBrain);
         }
-
 
         // Instantiate next Gneration
         NeuralNetwork[] nextGenerationArray = nextGenration.ToArray();
