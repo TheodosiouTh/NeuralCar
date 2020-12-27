@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
+    string BEST_BRAIN_SAVE_PATH = "./savedNetwork.txt";
+    [SerializeField] bool readFromFile = false;
     // UI components
     [SerializeField] Text Generation;
     [SerializeField] Text BestFitness;
@@ -30,26 +32,36 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < Population; i++)
-        {
-            NeuralNetwork temp = new NeuralNetwork(layers);
-            characters[i] = createCharacter(temp);
+        if (!readFromFile) { 
+            for (int i = 0; i < Population; i++)
+            {
+                NeuralNetwork temp = new NeuralNetwork(layers);
+                characters[i] = createCharacter(temp);
+            }
         }
+        else {
+            NeuralNetwork readCharacter = new NeuralNetwork(layers);
+            readCharacter.Load(BEST_BRAIN_SAVE_PATH);
+            newGeneration(readCharacter);
+            Debug.Log("Read from file");
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
         if (dead == Population)
         {
-            newGeneration();
-
+            newGeneration(null);
             dead = 0;
         }
 
     }
 
-    float getBestNetworkFitness()
+    NeuralNetwork getBestNetwork()
     {
         NeuralNetwork best = characters[0].GetComponent<Character>().brain;
         for (int i = 1; i < Population; i++)
@@ -59,41 +71,29 @@ public class Manager : MonoBehaviour
                 best = getBrain(characters[i]);
             }
         }
-        return best.fitness;
-    }
-    
-    NeuralNetwork[] getBestNetworks(){
-        float bestFitness = getBestNetworkFitness();
-         List<NeuralNetwork> bestList = new List<NeuralNetwork>();
-        for (int i = 0; i < Population; i++)
-        {
-            if (characters[i].GetComponent<Character>().brain.fitness == bestFitness)
-            {
-                bestList.Add(getBrain(characters[i]));
-            }
-        }
-        return bestList.ToArray();
+        best.Save(BEST_BRAIN_SAVE_PATH);
+        return best;
     }
 
-    void newGeneration()
+    void newGeneration(NeuralNetwork readFromFile)
     {
-        generation += 1;
-        Generation.text = "Generation " + generation;
         List<NeuralNetwork> nextGenration = new List<NeuralNetwork>();
-
-        // keep the smartest characters
-        NeuralNetwork[] smartesCharacters = getBestNetworks();
-        for (int i = 0; i < smartesCharacters.Length; i++)
-        {
-            nextGenration.Add(smartesCharacters[i]);
+        NeuralNetwork smartesCharacter;
+        if (readFromFile != null) {
+            smartesCharacter = readFromFile;
         }
-        BestFitness.text = "Best Fitness(last generation): " + smartesCharacters[0].fitness;
+        else {
+            generation += 1;
+            Generation.text = "Generation " + generation;
+            smartesCharacter = getBestNetwork();
+        }
+        nextGenration.Add(smartesCharacter);
+        BestFitness.text = "Best Fitness(last generation): " + smartesCharacter.fitness;
 
         // The rest of the spots are mutations of the smartes characters;
         while (nextGenration.ToArray().Length < Population)
         {
-            int selectedSmartCharacter = UnityEngine.Random.Range(0, smartesCharacters.Length - 1);
-            NeuralNetwork tempBrain = smartesCharacters[selectedSmartCharacter].Clone();
+            NeuralNetwork tempBrain = smartesCharacter.Clone();
             tempBrain.Mutate(mutationChance, mutationStrength);
             nextGenration.Add(tempBrain);
         }
@@ -102,7 +102,7 @@ public class Manager : MonoBehaviour
         NeuralNetwork[] nextGenerationArray = nextGenration.ToArray();
         for (int i = 0; i < Population; i++)
         {
-            Destroy(characters[i]);
+            if(characters[i] != null) Destroy(characters[i]);
             NeuralNetwork tempBrain = nextGenerationArray[i];
             tempBrain.fitness = 0;
             characters[i] = createCharacter(tempBrain);
