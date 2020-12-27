@@ -160,6 +160,18 @@ public class NeuralNetwork
     {
         using (StreamWriter sw = new StreamWriter(path))
         {
+            string layerStirng = "";
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (i != layers.Length - 1) {
+                    layerStirng += layers[i].ToString() + ',';
+                }
+                else {
+                    layerStirng += layers[i];
+                }
+            }
+            sw.WriteLine(layerStirng.ToString());
+
             for (int i = 0; i < biases.Length; i++)
             {
                 for (int j = 0; j < biases[i].Length; j++)
