@@ -173,34 +173,4 @@ public class NeuralNetwork
             }
         }
     }
-
-    public void BreedWith(NeuralNetwork other)
-    {
-        for (int i = 0; i < biases.Length; i++)
-        {
-            for (int j = 0; j < biases[i].Length; j++)
-            {
-                int selected = Random.Range(0, 10);
-                if(selected < 5)
-                {
-                   biases[i][j] = other.biases[i][j];
-                }
-            }
-        }
-
-        for (int i = 0; i < weights.Length; i++)
-        {
-            for (int j = 0; j < weights[i].Length; j++)
-            {
-                for (int k = 0; k < weights[i][j].Length; k++)
-                {
-                    int selected = Random.Range(0, 10);
-                    if (selected < 5)
-                    {
-                        weights[i][j][k] = other.weights[i][j][k];
-                    }
-                }
-            }
-        }
-    }
 }
