@@ -13,19 +13,14 @@ public class Manager : MonoBehaviour
 
     public static float timeToDeath = 5;
     [SerializeField] static int Population = 50;
-    [SerializeField] float movementSpeed = 2.0f;
+    [SerializeField] float movementSpeed = 10.0f;
     [SerializeField] int rotationSpeed = 1;
     [SerializeField] GameObject characterPrephab;
-    [SerializeField] int[] layers = { 5, 32, 12, 1 };
-    [SerializeField] float mutationChance = 7f;
-    [SerializeField] float mutationStrength = 0.5f;
-
-    [SerializeField] int numberOfMutatedCharactersToKeep = 5;
-    [SerializeField] float MutationCuttoff;
-    [SerializeField] static float GameSpeed = 1.0f;
+    [SerializeField] int[] layers = { 5, 12, 9, 2 };
+    [SerializeField] float mutationChance = 10f;
+    [SerializeField] float mutationStrength = 0.0005f;
 
     public static int dead = 0;
-    public static int numberOfNonSmartBrainsToBreed = 10;
     private GameObject[] characters = new GameObject[Population];
 
     public int currentCheckpoint = 0;
@@ -40,7 +35,6 @@ public class Manager : MonoBehaviour
             NeuralNetwork temp = new NeuralNetwork(layers);
             characters[i] = createCharacter(temp);
         }
-        MutationCuttoff = 2;
     }
 
     // Update is called once per frame
