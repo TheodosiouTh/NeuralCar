@@ -47,8 +47,7 @@ public class Manager : MonoBehaviour
             }
         }
         else {
-            NeuralNetwork readCharacter = new NeuralNetwork(layers);
-            readCharacter.Load(BEST_BRAIN_SAVE_PATH);
+            NeuralNetwork readCharacter = NeuralNetwork.Load(BEST_BRAIN_SAVE_PATH);
             newGeneration(readCharacter);
         }
 
