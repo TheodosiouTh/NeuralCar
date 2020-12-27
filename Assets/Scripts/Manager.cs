@@ -7,8 +7,14 @@ using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
-    string BEST_BRAIN_SAVE_PATH = "./savedNetwork.txt";
-    [SerializeField] bool readFromFile = false;
+    [SerializeField] Button startButton;
+    protected bool start = false;
+    [SerializeField] InputField filepath;
+    string BEST_BRAIN_SAVE_PATH;
+    [SerializeField] Toggle readSavedFile;
+    bool readFromFile = false;
+
+
     // UI components
     [SerializeField] Text Generation;
     [SerializeField] Text BestFitness;
@@ -30,8 +36,9 @@ public class Manager : MonoBehaviour
     int generation = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void startTraining()
     {
+        dead = 0;
         if (!readFromFile) { 
             for (int i = 0; i < Population; i++)
             {
@@ -43,7 +50,6 @@ public class Manager : MonoBehaviour
             NeuralNetwork readCharacter = new NeuralNetwork(layers);
             readCharacter.Load(BEST_BRAIN_SAVE_PATH);
             newGeneration(readCharacter);
-            Debug.Log("Read from file");
         }
 
     }
@@ -51,13 +57,22 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
-        if (dead == Population)
+        if (start)
         {
-            newGeneration(null);
-            dead = 0;
+            startTraining();
+            start = false;
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+            if (dead == Population)
+            {
+                newGeneration(null);
+                dead = 0;
+            }
+        }
+
 
     }
 
@@ -124,5 +139,17 @@ public class Manager : MonoBehaviour
         character.GetComponent<Character>().rotationSpeed = rotationSpeed;
         character.transform.parent = transform;
         return character;
+    }
+
+    public void initializeTraining()
+    {
+        readFromFile = readSavedFile.isOn;
+        string inputfieldText = filepath.text.ToString();
+        BEST_BRAIN_SAVE_PATH = inputfieldText != "" ? inputfieldText : "./savedNetwork.txt";
+        Debug.Log(BEST_BRAIN_SAVE_PATH);
+        filepath.gameObject.SetActive(false);
+        readSavedFile.gameObject.SetActive(false);
+        startButton.gameObject.SetActive(false);
+        start = true;
     }
 }
