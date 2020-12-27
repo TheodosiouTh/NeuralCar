@@ -107,8 +107,11 @@ public class NeuralNetwork
         return value;
     }
 
-    public void Load(string path)
+    public static NeuralNetwork Load(string path)
     {
+        int[] tempLayers = { 1, 2 };
+        NeuralNetwork loadedNeuralNetwork = new NeuralNetwork(tempLayers);
+
         TextReader tr = new StreamReader(path);
         int NumberOfLines = (int)new FileInfo(path).Length;
         string[] ListLines = new string[NumberOfLines];
@@ -120,26 +123,37 @@ public class NeuralNetwork
         tr.Close();
         if (new FileInfo(path).Length > 0)
         {
-            for (int i = 0; i < biases.Length; i++)
+            List<int> readLayers = new List<int>();
+            string[] LayerLine = ListLines[index].Split(',');
+            for (int i = 0; i < LayerLine.Length; i++) {
+                int tempLayer = 0;
+                Int32.TryParse(LayerLine[i], out tempLayer);
+                readLayers.Add(tempLayer);
+            }
+            loadedNeuralNetwork = new NeuralNetwork(readLayers.ToArray());
+            index++;
+
+            for (int i = 0; i < loadedNeuralNetwork.biases.Length; i++)
             {
-                for (int j = 0; j < biases[i].Length; j++)
+                for (int j = 0; j < loadedNeuralNetwork.biases[i].Length; j++)
                 {
-                    biases[i][j] = float.Parse(ListLines[index]);
+                    loadedNeuralNetwork.biases[i][j] = float.Parse(ListLines[index]);
                     index++;
                 }
             }
-            for (int i = 0; i < weights.Length; i++)
+            for (int i = 0; i < loadedNeuralNetwork.weights.Length; i++)
             {
-                for (int j = 0; j < weights[i].Length; j++)
+                for (int j = 0; j < loadedNeuralNetwork.weights[i].Length; j++)
                 {
-                    for (int k = 0; k < weights[i][j].Length; k++)
+                    for (int k = 0; k < loadedNeuralNetwork.weights[i][j].Length; k++)
                     {
-                        weights[i][j][k] = float.Parse(ListLines[index]);
+                        loadedNeuralNetwork.weights[i][j][k] = float.Parse(ListLines[index]);
                         index++;
                     }
                 }
             }
         }
+        return loadedNeuralNetwork;
     }
 
     public void Save(string path)
