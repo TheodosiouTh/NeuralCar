@@ -62,8 +62,7 @@ public class Manager : MonoBehaviour
         {
             if (characters[i].GetComponent<Character>().brain.fitness > best.fitness)
             {
-                best = characters[i].GetComponent<Character>().brain;
-                
+                best = getBrain(characters[i]);
             }
         }
         return best.fitness;
