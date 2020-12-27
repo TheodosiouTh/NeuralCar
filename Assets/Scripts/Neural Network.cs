@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+[Serializable]
 public class NeuralNetwork
 {
-    private int[] layers;   
-    private float[][] neurons;    
-    private float[][] biases;    
+    private int[] layers;
+    private float[][] neurons;
+    private float[][] biases;
     private float[][][] weights; 
     public float fitness;
 
