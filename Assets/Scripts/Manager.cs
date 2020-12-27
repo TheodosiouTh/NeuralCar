@@ -68,45 +68,18 @@ public class Manager : MonoBehaviour
         }
         return best.fitness;
     }
-
-    int[] getBestCharacters()
-    {
-        float bestAchievedFitness = getBestNetworkFitness();
-        MutationCuttoff = MutationCuttoff > bestAchievedFitness? MutationCuttoff : bestAchievedFitness;
-        List<int> bestOnes = new List<int>();
+    
+    NeuralNetwork[] getBestNetworks(){
+        float bestFitness = getBestNetworkFitness();
+         List<NeuralNetwork> bestList = new List<NeuralNetwork>();
         for (int i = 0; i < Population; i++)
         {
-            if (getBrain(characters[i]).fitness >= bestAchievedFitness)
+            if (characters[i].GetComponent<Character>().brain.fitness == bestFitness)
             {
-                bestOnes.Add(i);
+                bestList.Add(getBrain(characters[i]));
             }
         }
-
-        return bestOnes.ToArray();
-    }
-
-    NeuralNetwork[] sortByFitness(GameObject[] objectsToBeSorted) 
-    {
-        List<NeuralNetwork> charactersToBeSortedList = new List<NeuralNetwork>();
-        for (int i = 0; i < objectsToBeSorted.Length; i++)
-        {
-            charactersToBeSortedList.Add(getBrain(objectsToBeSorted[i]));
-        }
-
-        NeuralNetwork[] charactersToBeSorted = charactersToBeSortedList.ToArray();
-        for (int i = 0; i < charactersToBeSorted.Length; i += 1)
-        {
-            for (int j = 0; j < charactersToBeSorted.Length - i - 1; j += 1)
-            {
-                if(charactersToBeSorted[j].CompareTo(charactersToBeSorted[j+1]) == 1)
-                {
-                    NeuralNetwork temp = charactersToBeSorted[j + 1];
-                    charactersToBeSorted[j + 1] = charactersToBeSorted[j];
-                    charactersToBeSorted[j] = temp;
-                }
-            }
-        }
-        return charactersToBeSorted;
+        return bestList.ToArray();
     }
 
     void newGeneration()
