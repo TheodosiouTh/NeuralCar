@@ -38,7 +38,8 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void startTraining()
     {
-        dead = 0;
+        dead = 0; 
+        layers = new int[] { 8, 12, 9, 3, 2 };
         if (!readFromFile) { 
             for (int i = 0; i < Population; i++)
             {
