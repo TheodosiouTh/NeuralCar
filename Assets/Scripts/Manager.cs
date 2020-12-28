@@ -10,7 +10,7 @@ public class Manager : MonoBehaviour
     [SerializeField] Button startButton;
     protected bool start = false;
     [SerializeField] InputField filepath;
-    string BEST_BRAIN_SAVE_PATH;
+    string BEST_BRAIN_LOAD_SAVE_PATH;
     [SerializeField] Toggle readSavedFile;
     bool readFromFile = false;
 
@@ -20,6 +20,7 @@ public class Manager : MonoBehaviour
     [SerializeField] Text BestFitness;
 
     public static float timeToDeath = 5;
+    [SerializeField] InputField populationField;
     [SerializeField] static int Population = 100;
     [SerializeField] float movementSpeed = 10.0f;
     [SerializeField] int rotationSpeed = 1;
@@ -48,7 +49,7 @@ public class Manager : MonoBehaviour
             }
         }
         else {
-            NeuralNetwork readCharacter = NeuralNetwork.Load(BEST_BRAIN_SAVE_PATH);
+            NeuralNetwork readCharacter = NeuralNetwork.Load(BEST_BRAIN_LOAD_SAVE_PATH);
             newGeneration(readCharacter);
         }
 
@@ -86,7 +87,7 @@ public class Manager : MonoBehaviour
                 best = getBrain(characters[i]);
             }
         }
-        best.Save(BEST_BRAIN_SAVE_PATH);
+        best.Save(BEST_BRAIN_LOAD_SAVE_PATH);
         return best;
     }
 
@@ -144,12 +145,18 @@ public class Manager : MonoBehaviour
     public void initializeTraining()
     {
         readFromFile = readSavedFile.isOn;
-        string inputfieldText = filepath.text.ToString();
-        BEST_BRAIN_SAVE_PATH = inputfieldText != "" ? inputfieldText : "./savedNetwork.txt";
-        Debug.Log(BEST_BRAIN_SAVE_PATH);
+        string fileInputFieldText = filepath.text.ToString();
+        BEST_BRAIN_LOAD_SAVE_PATH = fileInputFieldText != "" ? fileInputFieldText : "./savedNetwork.txt";
+        string populationInputFieldText = populationField.text.ToString();
+        if(!int.TryParse(populationInputFieldText, out Population))
+        {
+            return;
+        }
+        Debug.Log(BEST_BRAIN_LOAD_SAVE_PATH);
         filepath.gameObject.SetActive(false);
         readSavedFile.gameObject.SetActive(false);
         startButton.gameObject.SetActive(false);
+        populationField.gameObject.SetActive(false);
         start = true;
     }
 }
