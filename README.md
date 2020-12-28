@@ -15,7 +15,7 @@ A project where a car learns how to drive, made using Unity3d.
    The character emmits 8 rays like so:
 
     <p align="center">
-        <img src="RayCasted.png" alt="Sublime's custom image" width="600"/>
+        <img src="https://github.com/TheodosiouTh/NeuralCar/blob/master/RayCasted.PNG" width="600"/>
     </p>
 
    Getting the respective distances from the walls. Then It uses these distances as inputs to it's Neural network and gets two values back. The first value represents the amount of horizontal rotation needed (positive values represent rotation to the right while negative values represent rotation to the left) and the second represents the amount of movement (positive values represent forward movement while negative values represent backwards movement).
@@ -23,7 +23,7 @@ A project where a car learns how to drive, made using Unity3d.
    Spread across the track are checkpoints:
 
     <p align="center">
-        <img src="CheckPoints.png" alt="Sublime's custom image" width="600"/>
+        <img src="https://github.com/TheodosiouTh/NeuralCar/blob/master/Checkpoints.PNG"  width="600"/>
     </p>
 
    If the character crosses one checkpoint then 5 points are added to it's Neural Network's fitness. Each character has 5 seconds to cross the next checkpoint. If he does not cross the checkpoint within that timeframe then he dies and 5 points are removed from it's Neural Network's fitness. The character can also die if he hits a wall. If that happens then 10 points are removed from it's Neural Network's fitness.
@@ -44,7 +44,7 @@ After a lot of experimentation I have reached to these values as the best ones:
 After training for 350 generations with the values above I got this result:
 
 <p align="center">
-  <img src="ResultSoFar.gif" alt="Sublime's custom image"/>
+  <img src="https://github.com/TheodosiouTh/NeuralCar/blob/master/ResultSofar.gif" />
 </p>
 
 Still have not made a full circle but so far I am happy with the result so far:
