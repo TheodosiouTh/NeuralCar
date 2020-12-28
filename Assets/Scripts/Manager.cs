@@ -20,13 +20,13 @@ public class Manager : MonoBehaviour
     [SerializeField] Text BestFitness;
 
     public static float timeToDeath = 5;
-    [SerializeField] static int Population = 50;
+    [SerializeField] static int Population = 100;
     [SerializeField] float movementSpeed = 10.0f;
     [SerializeField] int rotationSpeed = 1;
     [SerializeField] GameObject characterPrephab;
-    [SerializeField] int[] layers = { 5, 12, 9, 2 };
-    [SerializeField] float mutationChance = 10f;
-    [SerializeField] float mutationStrength = 0.0005f;
+    [SerializeField] int[] layers = { 8, 12, 9, 3, 2 };
+    [SerializeField] float mutationChance = 5f;
+    [SerializeField] float mutationStrength = 0.03f;
 
     public static int dead = 0;
     private GameObject[] characters = new GameObject[Population];

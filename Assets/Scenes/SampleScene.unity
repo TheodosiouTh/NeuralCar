@@ -508,8 +508,8 @@ MonoBehaviour:
   characterPrephab: {fileID: 4258723736043582119, guid: 5a2b6acede9a97b42904d710172001ae,
     type: 3}
   layers: 050000000a000000060000000300000002000000
-  mutationChance: 10
-  mutationStrength: 0.5
+  mutationChance: 5
+  mutationStrength: 0.03
   currentCheckpoint: 0
 --- !u!4 &333236256
 Transform:
