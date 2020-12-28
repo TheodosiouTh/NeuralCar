@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
     Vector3 currentPosition;
 
     Vector3[] angles;
-    float[] distances = new float[5];
+    float[] distances = new float[8];
 
     bool dead = false;
 
@@ -28,12 +28,15 @@ public class Character : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         transform = GetComponent<Transform>();
 
-        angles = new Vector3[5] {
+        angles = new Vector3[8] {
             -transform.right,
             transform.forward - transform.right,
             transform.forward,
+            transform.forward + transform.right,
             transform.right,
-            transform.forward + transform.right 
+            -transform.forward + transform.right,
+            -transform.forward,
+            -transform.forward - transform.right,
         };
 
         lastCheckpointHitTime = Time.time;
@@ -44,7 +47,6 @@ public class Character : MonoBehaviour
     void Update()
     {
         currentPosition = transform.position;
-
         if( Mathf.Abs(currentPosition.z) > 8.5f || Mathf.Abs(currentPosition.x) > 14)
         {
             Die();
@@ -59,6 +61,7 @@ public class Character : MonoBehaviour
             if (Time.time - lastCheckpointHitTime > Manager.timeToDeath)
             {
                 Die();
+                brain.fitness -= 5;
             }
         }
     }
@@ -75,20 +78,20 @@ public class Character : MonoBehaviour
             int checkpointHit = Int32.Parse(other.gameObject.name.Split(' ')[1]);
             if(checkpointHit == (lastCheckpoint + 1) || (lastCheckpoint == 17 && checkpointHit == 1))
             {
-                brain.fitness += 1;
+                brain.fitness += 5;
                 lastCheckpoint = checkpointHit;
                 lastCheckpointHitTime = Time.time;
             }
             else
             {
-                brain.fitness -= 2;
+                brain.fitness -= 10;
             }
         }
     }
 
     private float[] calculateDistances()
     {
-        float[] distancesFromWalls = new float[5];
+        float[] distancesFromWalls = new float[8];
         for (int i = 0; i < angles.Length; i++)
         { 
             distancesFromWalls[i] = castRay(angles[i]);
